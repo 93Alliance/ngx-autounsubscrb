@@ -16,7 +16,7 @@ npm i @flywine93/ngx-autounsubscrb --save
  - `@AutoUnsubscrb()` --- Unsubscribe member variable and temp variable when destroy.
 
  ```
- import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
+ import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
  @AutoUnsubscrb()
  @Component({
     selector: 'app-test-cmp',
@@ -28,7 +28,7 @@ npm i @flywine93/ngx-autounsubscrb --save
  - `MAutoAdd` --- Unsubscribe temporary variables when destroy.
 
  ```
- import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
+ import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
  ngOnInit(): void {
     // Manually add to the unsubscribe list through the MAutoAdd function and
     // unsubscribe when the component is destroyed
@@ -44,8 +44,7 @@ eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/sr
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, of, Observable, interval } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
-
+import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
 
 @AutoUnsubscrb()
 @Component({
@@ -88,7 +87,7 @@ eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/sr
 
 ```
 import { Directive, OnDestroy } from '@angular/core';
-import { AutoUnsubscrb } from 'ngx-autounsubscrb';
+import { AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
 import { tap } from 'rxjs/operators';
 import { Subscription, Observable, interval } from 'rxjs';
 
@@ -117,7 +116,7 @@ eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/sr
 
 ```
 import { Injectable, OnDestroy } from '@angular/core';
-import { AutoUnsubscrb } from 'ngx-autounsubscrb';
+import { AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
 import { tap } from 'rxjs/operators';
 import { Subscription, Observable, interval } from 'rxjs';
 
