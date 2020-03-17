@@ -1,24 +1,143 @@
-# NgxAutounsubscrb
+# ngx-autounsubscrb
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+<img src="./src/assets/ngx-autounsubscrb.png" width="750%" height="50%">
 
-## Code scaffolding
+Angular 9+ **automatically** **unsubscribe** to the **RXJS** **decorator**, It is **lightweight** and practical!!
 
-Run `ng generate component component-name --project ngx-autounsubscrb` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-autounsubscrb`.
-> Note: Don't forget to add `--project ngx-autounsubscrb` or else it will be added to the default project in your `angular.json` file. 
 
-## Build
+## Installation
 
-Run `ng build ngx-autounsubscrb` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+npm i @flywine93/ngx-autounsubscrb --save
+```
 
-## Publishing
+## Usage
 
-After building your library with `ng build ngx-autounsubscrb`, go to the dist folder `cd dist/ngx-autounsubscrb` and run `npm publish`.
+ - `@AutoUnsubscrb()` --- Unsubscribe member variable and temp variable when destroy.
 
-## Running unit tests
+ ```
+ import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
+ @AutoUnsubscrb()
+ @Component({
+    selector: 'app-test-cmp',
+    templateUrl: './test-cmp.component.html',
+    styleUrls: ['./test-cmp.component.css']
+ })
+ ...
+ ```
+ - `MAutoAdd` --- Unsubscribe temporary variables when destroy.
 
-Run `ng test ngx-autounsubscrb` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ ```
+ import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
+ ngOnInit(): void {
+    // Manually add to the unsubscribe list through the MAutoAdd function and
+    // unsubscribe when the component is destroyed
+    MAutoAdd(this, this.observable$.pipe(tap(console.log)).subscribe());
+ }
+ ```
 
-## Further help
+### Component
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/src/app/test/test-cmp/test-cmp.component.ts)
+
+```
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription, of, Observable, interval } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
+
+
+@AutoUnsubscrb()
+@Component({
+  selector: 'app-test-cmp',
+  templateUrl: './test-cmp.component.html',
+  styleUrls: ['./test-cmp.component.css']
+})
+export class TestCmpComponent implements OnInit, OnDestroy {
+  // test public member
+  a: Subscription; // don't unsubscribe
+  b: Subscription; // will unsubscribe
+
+  // test private member
+  private c: Subscription; // will unsubscribe
+
+  // test advance usage
+  private observable$: Observable<number> = interval(1000);
+  subscription$$: Subscription; // will unsubscribe
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.b = of(1).subscribe(() => { });
+    this.c = of(1).subscribe(() => { });
+    this.subscription$$ = this.observable$.pipe(tap(console.log)).subscribe();
+    // Manually add to the unsubscribe list through the MAutoAdd function and
+    // unsubscribe when the component is destroyed
+    MAutoAdd(this, this.observable$.pipe(tap(console.log)).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    console.log('TestCmpComponent component destroy!');
+  }
+}
+```
+
+### Directive
+
+eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/src/app/test/test-dir.directive.ts)
+
+```
+import { Directive, OnDestroy } from '@angular/core';
+import { AutoUnsubscrb } from 'ngx-autounsubscrb';
+import { tap } from 'rxjs/operators';
+import { Subscription, Observable, interval } from 'rxjs';
+
+@AutoUnsubscrb()
+@Directive({
+  selector: '[appTestDir]'
+})
+export class TestDirDirective implements OnDestroy {
+
+  subscription$$: Subscription; // will unsubscribe
+  observable$: Observable<number> = interval(1000); // don't unsubscribe
+
+  constructor() {
+    this.subscription$$ = this.observable$.pipe(tap(console.log)).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    console.log('TestDirDirective directive  destroy!');
+  }
+}
+```
+
+### Service
+
+eg. [source code](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/src/app/test/test-prov.service.ts)
+
+```
+import { Injectable, OnDestroy } from '@angular/core';
+import { AutoUnsubscrb } from 'ngx-autounsubscrb';
+import { tap } from 'rxjs/operators';
+import { Subscription, Observable, interval } from 'rxjs';
+
+@AutoUnsubscrb()
+@Injectable()
+export class TestProvService implements OnDestroy {
+
+  subscription$$: Subscription; // will unsubscribe
+  observable$: Observable<number> = interval(1000); // don't unsubscribe
+
+  constructor() {
+    this.subscription$$ = this.observable$.pipe(tap(console.log)).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    console.log('TestProvService service  destroy!');
+  }
+}
+```
+
+### Tooltip
+
+Do not create `autoAddList` member variables in component, directive, or service; this will be fixed in a later release.
