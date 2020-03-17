@@ -14,7 +14,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-autounsubscrb": [
+        "dist/ngx-autounsubscrb/ngx-autounsubscrb",
+        "dist/ngx-autounsubscrb"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
