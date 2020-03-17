@@ -1,6 +1,6 @@
 # ngx-autounsubscrb
 
-<img src="./src/assets/ngx-autounsubscrb.png" width="750%" height="50%">
+<img src="https://raw.githubusercontent.com/93Alliance/ngx-autounsubscrb/master/src/assets/ngx-autounsubscrb.png" width="750%" height="50%">
 
 Angular 9+ **automatically** **unsubscribe** to the **RXJS** **decorator**, It is **lightweight** and practical!!
 
