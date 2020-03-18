@@ -1,5 +1,8 @@
 # ngx-autounsubscrb
 
+[![npm](https://img.shields.io/npm/dt/@flywine93/ngx-autounsubscrb.svg)]()
+[![npm](https://img.shields.io/npm/l/@flywine93/ngx-autounsubscrb.svg)]()
+
 <img src="./src/assets/ngx-autounsubscrb.png" width="750%" height="50%">
 
 Angular 2+ **automatically** **unsubscribe** to the **RXJS** **decorator**, It is **lightweight** and practical!!
