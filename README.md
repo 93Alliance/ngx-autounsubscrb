@@ -172,3 +172,7 @@ export class TestProvService implements OnDestroy {
 ### Tooltip
 
 Do not create `autoAddList` member variables in component, directive, or service; this will be fixed in a later release.
+
+### License
+
+The MIT License (see the [LICENSE](https://github.com/93Alliance/ngx-autounsubscrb/blob/master/LICENSE) file for the full text)
