@@ -1,14 +1,34 @@
 import { IvyKey } from './constant';
 import { isFun } from './util';
 
+export interface Options {
+  blackList?: string[];
+  checkArrVar?: boolean;
+}
+
+const defaultOptions = {
+  blackList: [],
+  checkArrVar: false
+};
 
 /**
  * unsubscribe variable
  * @param member public and private member or temp variable
  */
-function unsubscribe(member: any): void {
-  if (member && isFun(member.unsubscribe)) {
-    member.unsubscribe();
+export function unsubscribe(variable: any, options: Options): void {
+  if (variable) {
+    if (isFun(variable.unsubscribe)) {
+      variable.unsubscribe();
+      return;
+    }
+    // if variable is array type，will check and unsubscribe
+    if (options.checkArrVar && Array.isArray(variable)) {
+      for (const ele of variable) {
+        if (ele && isFun(ele.unsubscribe)) {
+          ele.unsubscribe();
+        }
+      }
+    }
   }
 }
 
@@ -17,12 +37,13 @@ function unsubscribe(member: any): void {
  * @param options options
  * 1.blackList---Variables in blacklist are not cancelled
  */
-export function AutoUnsubscrb(options = { blackList: [] }) {
+export function AutoUnsubscrb(options: Options = {}) {
   return function(target: any) {
     const original = target.prototype['ngOnDestroy']; // cache original ngOnDestroy function
     if (!isFun(original)) {
       throw new Error(`${target.name} is using @AutoUnsubscrb but does not implement OnDestroy`);
     }
+    options = Object.assign(defaultOptions, options);
     target.prototype.autoAddList = []; // Used to cache objects added through MAutoAdd
     target.prototype.ngOnDestroy = function ngOnDestroy() {
       if (isFun(original)) {
@@ -34,11 +55,11 @@ export function AutoUnsubscrb(options = { blackList: [] }) {
         if (options.blackList.includes(propName)) {
           continue;
         }
-        unsubscribe(this[propName]);
+        unsubscribe(this[propName], options);
       }
       // unsubscribe temp variable
       for (const sub of this.autoAddList) {
-        unsubscribe(sub);
+        unsubscribe(sub, options);
       }
     };
     // Ivy

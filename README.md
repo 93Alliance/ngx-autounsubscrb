@@ -2,7 +2,7 @@
 
 <img src="./src/assets/ngx-autounsubscrb.png" width="750%" height="50%">
 
-Angular 9+ **automatically** **unsubscribe** to the **RXJS** **decorator**, It is **lightweight** and practical!!
+Angular 2+ **automatically** **unsubscribe** to the **RXJS** **decorator**, It is **lightweight** and practical!!
 
 
 ## Installation
@@ -13,8 +13,11 @@ npm i @flywine93/ngx-autounsubscrb --save
 
 ## Usage
 
- - `@AutoUnsubscrb()` --- Unsubscribe member variable and temp variable when destroy.
+When using this decorator, you must implement the `OnDestroy` method.
 
+ - `@AutoUnsubscrb(options: Options)` --- Unsubscribe member variable and temp variable when destroy.
+
+ eg.
  ```
  import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
  @AutoUnsubscrb()
@@ -25,8 +28,27 @@ npm i @flywine93/ngx-autounsubscrb --save
  })
  ...
  ```
- - `MAutoAdd` --- Unsubscribe temporary variables when destroy.
+ or
 
+ ```
+ import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
+ @AutoUnsubscrb({blackList: ['a']})
+ @Component({
+    selector: 'app-test-cmp',
+    templateUrl: './test-cmp.component.html',
+    styleUrls: ['./test-cmp.component.css']
+ })
+ export class Test implements OnInit, OnDestroy {
+     a: Subscription; // don't unsubscribe
+ }
+ ```
+ The `a` member variable will be excluded.
+
+ - `MAutoAdd(target: any, subscrb: any)` --- Unsubscribe temporary variables when destroy.
+    - `target`: Class `this`
+    - `subscrb`: temporary variable
+
+ eg.
  ```
  import { MAutoAdd, AutoUnsubscrb } from '@flywine93/ngx-autounsubscrb';
  ngOnInit(): void {
@@ -136,6 +158,13 @@ export class TestProvService implements OnDestroy {
   }
 }
 ```
+
+### Options
+
+| Option      | Description                                            | Default Value |
+| ----------- | ------------------------------------------------------ | ------------- |
+| `checkArrVar` | check member variables of array type, if it is subscription array, will unsubscribe | `false` |
+| `blackList` | an array of properties to exclude                      | `[]` |
 
 ### Tooltip
 

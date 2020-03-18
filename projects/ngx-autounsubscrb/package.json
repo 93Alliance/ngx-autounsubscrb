@@ -1,9 +1,9 @@
 {
   "name": "@flywine93/ngx-autounsubscrb",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "peerDependencies": {
-    "@angular/common": ">=9.0.0",
-    "@angular/core": ">=9.0.0"
+    "@angular/common": "*",
+    "@angular/core": "*"
   },
   "description": "Angular 9+ automatically unsubscribe to the RXJS decorator, It is lightweight and practical!!",
   "main": "karma.conf.js",

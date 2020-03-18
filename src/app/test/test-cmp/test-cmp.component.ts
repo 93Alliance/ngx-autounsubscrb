@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, of, Observable, interval } from 'rxjs';
+import { Subscription, of, Observable, interval, fromEvent } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { MAutoAdd, AutoUnsubscrb } from 'ngx-autounsubscrb';
 
 
-@AutoUnsubscrb()
+@AutoUnsubscrb({checkArrVar: true})
 @Component({
   selector: 'app-test-cmp',
   templateUrl: './test-cmp.component.html',
@@ -21,6 +21,10 @@ export class TestCmpComponent implements OnInit, OnDestroy {
   // test advance usage
   private observable$: Observable<number> = interval(1000);
   subscription$$: Subscription; // will unsubscribe
+  subscriptions = [
+    interval(1000).subscribe((e) => { console.log('array var0--', e); }),
+    interval(1000).subscribe((e) => { console.log('array var1--', e); }),
+  ];
 
   constructor() { }
 
